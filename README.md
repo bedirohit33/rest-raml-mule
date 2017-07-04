@@ -43,6 +43,7 @@
   /customers/{customerId}/orders/{orderId}
 
 * **Fields**
+
      orderId - The unique ID associated with each order <br />
      name -  Name associated with each order <br />
      date -  Specifies the date on which the order is placed <br />
@@ -71,6 +72,7 @@ The reason I have designed it like this because only a 'customer' can place 'ord
   /products/{productId}
 
 * **Fields**
+
      productId - The unique ID associated with each product <br />
      name -  Name associated with each product<br />
      price -  Price associated with each product<br />
