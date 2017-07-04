@@ -2,5 +2,6 @@
   "customerId" : 1,
   "firstName" : "Rohit",
   "lastName" : "Bedi",
-  "address" : ["1/98-102, Werrington, Sydney NSW 2000"]
+  "address" : ["1/98-102, Werrington, Sydney NSW 2000",
+                "DGF street, Sydney, NSW 2000"]
 }
