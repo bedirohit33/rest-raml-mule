@@ -1,11 +1,11 @@
 **Outline**
 ----
-This is a Mulesoft project defining restful webservice for customers, orders and products using RAML
-RAML api files -  src/main/api
-Mule fow - src/main/app(Flows)
+	This is a Mulesoft project defining restful webservice for customers, orders and products using RAML.
+	RAML api files -  src/main/api.
+	Mule fow - src/main/app(Flows).
 
-I have also published this service on Anypoint Mulesoft Exchange. You can access the below link and check directly as well.
-portal URL  - https://anypoint.mulesoft.com/apiplatform/not-employed/#/portals/organizations/8b4ea1ee-302d-411e-bcb9-93cebec9acb1/apis/23208096/versions/847172
+	I have also published this service on Anypoint Mulesoft Exchange. You can access the below link and check directly as well. 
+	portal URL  - https://anypoint.mulesoft.com/apiplatform/not-employed/#/portals/organizations/8b4ea1ee-302d-411e-bcb9-93cebec9acb1/apis/23208096/versions/847172
 
 
 **customer**
