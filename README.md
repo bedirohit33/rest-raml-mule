@@ -18,14 +18,15 @@
 
 * **URL**
   
-  /customers
+  /customers <br />
   /customers/{customerId}
 
 * **Fields**
-    `customerId -  The unique ID associated with each customer 
-    firstName - First name 
-    lastName - Last name
-    address - List of addresses  associated with each customer`
+
+    customerId -  The unique ID associated with each customer <br />
+    firstName - First name <br />
+    lastName - Last name <br />
+    address - List of addresses  associated with each customer <br />
     
 * **Methods:**
 
@@ -38,18 +39,18 @@
 
 * **URL**
   
-  /customers/{customerId}/orders
+  /customers/{customerId}/orders <br />
   /customers/{customerId}/orders/{orderId}
 
 * **Fields**
-    `orderId - The unique ID associated with each order
-     name -  Name associated with each order
-     date -  Specifies the date on which the order is placed
-     products -  Lists all products associated with this order(HATEOAS)`
+     orderId - The unique ID associated with each order <br />
+     name -  Name associated with each order <br />
+     date -  Specifies the date on which the order is placed <br />
+     products -  Lists all products associated with this order(HATEOAS) <br />
     
 * **Methods:**
 
-  `GET` | `POST` | `PLACE` | `DELETE`
+  `GET`
   
 * **Explanation:**
 The reason I have designed it like this because only a 'customer' can place 'orders'. In other words, you cannot create any order without having  a customer for it.
@@ -66,19 +67,19 @@ The reason I have designed it like this because only a 'customer' can place 'ord
 
 * **URL**
   
-  /products
+  /products <br />
   /products/{productId}
 
 * **Fields**
-    `productId - The unique ID associated with each product
-     name -  Name associated with each product
-     price -  Price associated with each product
-     customers -  Lists all customers who bought this product(HATEOAS)`
+     productId - The unique ID associated with each product <br />
+     name -  Name associated with each product<br />
+     price -  Price associated with each product<br />
+     customers -  Lists all customers who bought this product(HATEOAS)<br />
     
 * **Methods:**
 
   `GET` | `POST` | `PLACE` | `DELETE`
   
 * **Explanation:**
-The reason I have designed it like this because you can add products to your system independently.
-Each product has a list of customers associated with it which you can use for various purposes.
+The reason I have designed it like this because you can add products to the system independently.
+Each product has a list of customers associated with it. One can determine the product popularity by looking at the number of customers associated with it.
