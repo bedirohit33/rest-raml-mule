@@ -1,0 +1,23 @@
+
+    {
+    "productId" : 100,
+    "name" : "Product 1",
+    "price" : 20,
+    "customers" : [
+                    {
+                      "customerId" : 1,
+                      "firstName" : "David",
+                      "lastName" : "Johnsson",
+                      "address" : ["ABC street, Sydney NSW 2000"]
+                    },    
+                    {
+                    "customerId" : 2,
+                    "firstName" : "Rohit",
+                    "lastName" : "Bedi",
+                    "address" : ["1/98-102, Werrington, Sydney NSW 2000",
+                                  "DGF street, Sydney, NSW 2000"]
+                    }
+                  ]
+      
+  }
+      

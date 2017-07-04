@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    <http:listener-config name="api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="api-config" raml="api.raml" consoleEnabled="false" doc:name="Router"/>
+    <flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="api-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+    <flow name="api-console">
+        <http:listener config-ref="api-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="api-config" doc:name="APIkit Console"/>
+    </flow>
+    <flow name="delete:/customers/{customerId}:api-config">
+        <set-payload value="{&#xA;  &quot;message&quot; : &quot;Not found&quot;,&#xA;  &quot;code&quot; : 404&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/products/{productId}:api-config">
+        <set-payload value="{&#xA;  &quot;message&quot; : &quot;Not found&quot;,&#xA;  &quot;code&quot; : 404&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="patch:/customers/{customerId}:application/json:api-config">
+        <set-payload value="{&#xA;  &quot;customerId&quot; : 1,&#xA;  &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;  &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;  &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="patch:/products/{productId}:application/json:api-config">
+        <set-payload value="{&#xA;    &quot;productId&quot; : 100,&#xA;    &quot;name&quot; : &quot;Product 1&quot;,&#xA;    &quot;price&quot; : 20,&#xA;    &quot;customers&quot; : [&#xA;                    {&#xA;                      &quot;customerId&quot; : 1,&#xA;                      &quot;firstName&quot; : &quot;David&quot;,&#xA;                      &quot;lastName&quot; : &quot;Johnsson&quot;,&#xA;                      &quot;address&quot; : [&quot;ABC street, Sydney NSW 2000&quot;]&#xA;                    },    &#xA;                    {&#xA;                    &quot;customerId&quot; : 2,&#xA;                    &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;                    &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;                    &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;,&#xA;                                  &quot;DGF street, Sydney, NSW 2000&quot;]&#xA;                    }&#xA;                  ]&#xA;      &#xA;  }" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers:api-config">
+        <set-payload value="[&#xA;  {&#xA;    &quot;customerId&quot; : 1,&#xA;    &quot;firstName&quot; : &quot;David&quot;,&#xA;    &quot;lastName&quot; : &quot;Johnsson&quot;,&#xA;    &quot;address&quot; : [&quot;ABC street, Sydney NSW 2000&quot;]&#xA;  },    &#xA;  {&#xA;  &quot;customerId&quot; : 2,&#xA;  &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;  &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;  &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;,&#xA;                &quot;DGF street, Sydney, NSW 2000&quot;]&#xA;  },&#xA;  {&#xA;    &quot;customerId&quot; : 3,&#xA;    &quot;firstName&quot; : &quot;Jack&quot;,&#xA;    &quot;lastName&quot; : &quot;homs&quot;,&#xA;    &quot;address&quot; : [&quot;Nody street, Sydney NSW 2000&quot;]&#xA;  },    &#xA;  {&#xA;  &quot;customerId&quot; : 4,&#xA;  &quot;firstName&quot; : &quot;Bin&quot;,&#xA;  &quot;lastName&quot; : &quot;Watson&quot;,&#xA;  &quot;address&quot; : [&quot;St. Marys, Sydney NSW 2000&quot;,&#xA;                &quot;ECHO street, Sydney, NSW 2000&quot;]&#xA;  }&#xA;]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/orders:api-config">
+        <set-payload value="[&#xA;  {&#xA;    &quot;orderId&quot; : 10,&#xA;    &quot;name&quot; : &quot;Order 1&quot;,&#xA;    &quot;date&quot; : &quot;2015-06-02&quot;,&#xA;    &quot;products&quot; : [&#xA;                    {&#xA;                      &quot;productId&quot; : 100,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 20&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 101,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 30&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 102,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 40&#xA;                    }&#xA;                  ]&#xA;  },&#xA;  {&#xA;    &quot;orderId&quot; : 20,&#xA;    &quot;name&quot; : &quot;Order 2&quot;,&#xA;    &quot;date&quot; : &quot;2015-07-02&quot;,&#xA;    &quot;products&quot; : [&#xA;                    {&#xA;                      &quot;productId&quot; : 100,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 20&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 101,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 30&#xA;                    }&#xA;                  ]&#xA;  },&#xA;  &#xA;  {&#xA;    &quot;orderId&quot; : 30,&#xA;    &quot;name&quot; : &quot;Order 3&quot;,&#xA;    &quot;date&quot; : &quot;2016-07-02&quot;,&#xA;    &quot;products&quot; : [&#xA;                    {&#xA;                      &quot;productId&quot; : 100,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 20&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 101,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 30&#xA;                    }&#xA;                  ]&#xA;  }&#xA;]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products:api-config">
+        <set-payload value="[&#xA;  {&#xA;    &quot;productId&quot; : 100,&#xA;    &quot;name&quot; : &quot;Product 1&quot;,&#xA;    &quot;price&quot; : 20,&#xA;    &quot;customers&quot; : [&#xA;                    {&#xA;                      &quot;customerId&quot; : 1,&#xA;                      &quot;firstName&quot; : &quot;David&quot;,&#xA;                      &quot;lastName&quot; : &quot;Johnsson&quot;,&#xA;                      &quot;address&quot; : [&quot;ABC street, Sydney NSW 2000&quot;]&#xA;                    },    &#xA;                    {&#xA;                    &quot;customerId&quot; : 2,&#xA;                    &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;                    &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;                    &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;,&#xA;                                  &quot;DGF street, Sydney, NSW 2000&quot;]&#xA;                    }&#xA;                  ]&#xA;      &#xA;  },&#xA;  &#xA;  {&#xA;    &quot;productId&quot; : 200,&#xA;    &quot;name&quot; : &quot;Product 1&quot;,&#xA;    &quot;price&quot; : 40,&#xA;    &quot;customers&quot; : [&#xA;                    {&#xA;                      &quot;customerId&quot; : 3,&#xA;                      &quot;firstName&quot; : &quot;Jack&quot;,&#xA;                      &quot;lastName&quot; : &quot;homs&quot;,&#xA;                      &quot;address&quot; : [&quot;Nody street, Sydney NSW 2000&quot;]&#xA;                    },    &#xA;                    {&#xA;                      &quot;customerId&quot; : 4,&#xA;                      &quot;firstName&quot; : &quot;Bin&quot;,&#xA;                      &quot;lastName&quot; : &quot;Watson&quot;,&#xA;                      &quot;address&quot; : [&quot;St. Marys, Sydney NSW 2000&quot;,&#xA;                                    &quot;ECHO street, Sydney, NSW 2000&quot;]&#xA;                    }&#xA;                  ]&#xA;      &#xA;  }&#xA;]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}:api-config">
+        <set-payload value="{&#xA;  &quot;customerId&quot; : 1,&#xA;  &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;  &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;  &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/orders/{orderId}:api-config">
+        <set-payload value="{&#xA;    &quot;orderId&quot; : 10,&#xA;    &quot;name&quot; : &quot;Order 1&quot;,&#xA;    &quot;date&quot; : &quot;2015-06-02&quot;,&#xA;    &quot;products&quot; : [&#xA;                    {&#xA;                      &quot;productId&quot; : 100,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 20&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 101,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 30&#xA;                    },&#xA;                    {&#xA;                      &quot;productId&quot; : 102,&#xA;                      &quot;name&quot; : &quot;Product 1&quot;,&#xA;                      &quot;price&quot; : 40&#xA;                    }&#xA;                  ]&#xA;  }" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}:api-config">
+        <set-payload value="{&#xA;    &quot;productId&quot; : 100,&#xA;    &quot;name&quot; : &quot;Product 1&quot;,&#xA;    &quot;price&quot; : 20,&#xA;    &quot;customers&quot; : [&#xA;                    {&#xA;                      &quot;customerId&quot; : 1,&#xA;                      &quot;firstName&quot; : &quot;David&quot;,&#xA;                      &quot;lastName&quot; : &quot;Johnsson&quot;,&#xA;                      &quot;address&quot; : [&quot;ABC street, Sydney NSW 2000&quot;]&#xA;                    },    &#xA;                    {&#xA;                    &quot;customerId&quot; : 2,&#xA;                    &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;                    &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;                    &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;,&#xA;                                  &quot;DGF street, Sydney, NSW 2000&quot;]&#xA;                    }&#xA;                  ]&#xA;      &#xA;  }" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/customers:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="{&#xA;  &quot;customerId&quot; : 1,&#xA;  &quot;firstName&quot; : &quot;Rohit&quot;,&#xA;  &quot;lastName&quot; : &quot;Bedi&quot;,&#xA;  &quot;address&quot; : [&quot;1/98-102, Werrington, Sydney NSW 2000&quot;]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/products:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="{&#xA;    &quot;productId&quot; : 100,&#xA;    &quot;name&quot; : &quot;Product 1&quot;,&#xA;    &quot;price&quot; : 20&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <apikit:mapping-exception-strategy name="api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

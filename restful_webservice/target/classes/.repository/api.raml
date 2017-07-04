@@ -1,0 +1,170 @@
+#%RAML 1.0
+---
+baseUri: https://mocksvc.mulesoft.com/mocks/5cc1c550-ece6-494f-ac6e-e6b4918280d1
+title: Deloitte test API
+version: v1
+
+types: 
+  customer: !include types/customer.raml
+  order: !include types/order.raml
+  product: !include types/product.raml
+  error: !include types/error.raml
+  
+resourceTypes:
+  collection-get:
+    usage: Use this resourceType to represent any collection of items that can only be fetched
+    description: A collection of <<resourcePathName>>
+    get:
+      description: Get all <<resourcePathName>>
+      is: [hasResponseCollection: { typeName: <<typeName>>, exampleCollectionGet: <<exampleCollectionGet>>}, pageable]
+  
+  item-get:
+    usage: Use this resourceType to represent any single item that can only be fetched
+    description: A single <<resourcePathName|!singularize>>
+    get:
+      description: Get a <<resourcePathName|!singularize>>
+      is: [hasResponseItem : { typeName : <<typeName>>, exampleItemGet: <<exampleItemGet>>}, hasNotFound]
+  
+  collection:
+    usage: Use this resourceType to represent any collection of items
+    description: A collection of <<resourcePathName>>
+    get:
+      description: Get all <<resourcePathName>>
+      is: [hasResponseCollection: { typeName: <<typeName>>, exampleCollectionGet: <<exampleCollectionGet>>}, pageable]
+            
+    post:
+      description: Create a new <<resourcePathName|!singularize>>, id does not matter
+      is: [hasRequestItem : {typeName : <<typeName>>, exampleCollectionPost: <<exampleCollectionPost>>}, hasPostResponseItem : {typeName : <<typeName>>, exampleItemGet : <<exampleItemGet>>}]
+  
+  item:
+    usage: Use this resourceType to represent any single item
+    description: A single <<resourcePathName|!singularize>>
+    get:
+      description: Get a <<resourcePathName|!singularize>>
+      is: [hasResponseItem : { typeName : <<typeName>>, exampleItemGet: <<exampleItemGet>>}, hasNotFound]
+              
+    patch:
+      description: Update a <<resourcePathName|!singularize>>
+      is: [hasRequestItem : { typeName : <<typeName1>>, exampleCollectionPost: <<exampleItemPut>>}, hasResponseItem : {typeName : <<typeName1>>, exampleItemGet : <<exampleItemGet>>}, hasNotFound]
+      
+    delete:
+      description: Delete a <<resourcePathName|!singularize>>
+      is: [hasDeleted, hasNotFound]
+        
+traits: 
+  hasResponseCollection:
+    responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: array
+              items: <<typeName>>
+              example: <<exampleCollectionGet>>              
+              
+  hasResponseItem:
+    responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: <<typeName>>
+              example: <<exampleItemGet>>
+
+  hasPostResponseItem:
+    responses:
+      201:
+        description: Created Successfully
+        body:
+          application/json:
+            type: <<typeName>>
+            example: <<exampleItemGet>>
+
+  hasRequestItem:
+    body:
+      application/json:
+        type: <<typeName>>
+        example: <<exampleCollectionPost>>
+
+  hasNotFound:
+    responses:
+      404:
+        body:
+          application/json:
+            type: error
+            example: !include examples/error.json
+
+  hasDeleted:
+    responses:
+      204:
+        description: Successfully deleted
+  
+  pageable:
+    queryParameters:
+      offset:
+        description: Skip over a number of elements by specifying an offset value for the query
+        type: integer
+        required: false
+        example: 20
+        default: 0
+      limit:
+        description: Limit the number of elements on the response
+        type: integer
+        required: false
+        example: 80
+        default: 10    
+
+/customers:
+  type :
+    collection:
+      typeName: customer
+      exampleCollectionGet: !include examples/customer/customers.json  
+      exampleCollectionPost: !include examples/customer/newCustomer.json
+      exampleItemGet: !include examples/customer/customer.json
+        
+  /{customerId}:
+    type: 
+      item:
+        typeName: customer
+        typeName1: customer
+        exampleItemGet: !include examples/customer/customer.json
+        exampleItemPut: !include examples/customer/customer.json
+  
+    /orders:
+      type :
+        collection-get:
+          typeName: order
+          exampleCollectionGet: !include examples/order/orders.json
+          #exampleCollectionPost: !include examples/order/newOrder.json
+          #exampleItemGet: !include examples/order/order.json
+      
+      /{orderId}:
+        type: 
+          item-get:
+            typeName: order
+            exampleItemGet: !include examples/order/order.json
+            #exampleItemPut: !include examples/order/order.json
+    
+/products:
+  type: 
+    collection:
+      typeName: product
+      exampleCollectionGet: !include examples/product/products.json
+      exampleCollectionPost: !include examples/product/newProduct.json
+      exampleItemGet: !include examples/product/productPostResp.json
+  
+  /{productId}:
+    type: 
+      item:
+        typeName: product
+        typeName1: product
+        exampleItemGet: !include examples/product/product.json
+        exampleItemPut: !include examples/product/product.json
+        
+    
+      
+      
+    
+      
+  
+  

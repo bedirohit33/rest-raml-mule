@@ -1,0 +1,10 @@
+#%RAML 1.0 DataType
+
+properties: 
+  productId?: integer
+  name: string
+  price: integer
+  customers?:
+    type: array
+    items: !include customer.raml
+  

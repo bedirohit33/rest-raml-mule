@@ -1,0 +1,29 @@
+[
+  {
+    "customerId" : 1,
+    "firstName" : "David",
+    "lastName" : "Johnsson",
+    "address" : ["ABC street, Sydney NSW 2000"]
+  },    
+  {
+  "customerId" : 2,
+  "firstName" : "Rohit",
+  "lastName" : "Bedi",
+  "address" : ["1/98-102, Werrington, Sydney NSW 2000",
+                "DGF street, Sydney, NSW 2000"]
+  },
+  {
+    "customerId" : 3,
+    "firstName" : "Jack",
+    "lastName" : "homs",
+    "address" : ["Nody street, Sydney NSW 2000"]
+  },    
+  {
+  "customerId" : 4,
+  "firstName" : "Bin",
+  "lastName" : "Watson",
+  "address" : ["St. Marys, Sydney NSW 2000",
+                "ECHO street, Sydney, NSW 2000"]
+  }
+]
+

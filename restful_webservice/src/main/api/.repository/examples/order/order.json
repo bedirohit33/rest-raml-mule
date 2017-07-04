@@ -1,0 +1,22 @@
+{
+    "orderId" : 10,
+    "name" : "Order 1",
+    "date" : "2015-06-02",
+    "products" : [
+                    {
+                      "productId" : 100,
+                      "name" : "Product 1",
+                      "price" : 20
+                    },
+                    {
+                      "productId" : 101,
+                      "name" : "Product 1",
+                      "price" : 30
+                    },
+                    {
+                      "productId" : 102,
+                      "name" : "Product 1",
+                      "price" : 40
+                    }
+                  ]
+  }
